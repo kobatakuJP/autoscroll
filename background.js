@@ -1,5 +1,5 @@
 let scrollIntervalId = null;
-let scrollSpeed = 1000 / 60; // Default scroll speed in milliseconds
+let scrollSpeed = 1000 / 30; // Default scroll speed in milliseconds
 let scrollH = 1; // スクロールする縦幅
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
