@@ -2,11 +2,13 @@ let scrollIntervalId = null;
 let scrollSpeed = 100; // Default scroll speed in milliseconds
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  const tabId = message.tabId; // タブIDをメッセージから取得
+  
   if (message.action === 'start') {
     if (!scrollIntervalId) {
       scrollIntervalId = setInterval(() => {
         chrome.scripting.executeScript({
-          target: { tabId: sender.tab.id },
+          target: { tabId: tabId }, // ここでエラーが解決される
           func: () => window.scrollBy(0, 10) // Adjust 10 to change the scroll amount
         });
       }, scrollSpeed);
@@ -22,7 +24,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       clearInterval(scrollIntervalId);
       scrollIntervalId = setInterval(() => {
         chrome.scripting.executeScript({
-          target: { tabId: sender.tab.id },
+          target: { tabId: tabId }, // ここでエラーが解決される
           func: () => window.scrollBy(0, 10) // Adjust 10 to change the scroll amount
         });
       }, scrollSpeed);
