@@ -1,5 +1,6 @@
 let scrollIntervalId = null;
-let scrollSpeed = 100; // Default scroll speed in milliseconds
+const scrollSpeed = 1000/60; // Default scroll speed in milliseconds
+let scrollH = 1; // スクロールする縦幅
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const tabId = message.tabId; // タブIDをメッセージから取得
@@ -9,7 +10,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       scrollIntervalId = setInterval(() => {
         chrome.scripting.executeScript({
           target: { tabId: tabId }, // ここでエラーが解決される
-          func: () => window.scrollBy(0, 10) // Adjust 10 to change the scroll amount
+          func: () => window.scrollBy(0, scrollH) // Adjust 10 to change the scroll amount
         });
       }, scrollSpeed);
     }
@@ -19,13 +20,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       scrollIntervalId = null;
     }
   } else if (message.action === 'setSpeed') {
-    scrollSpeed = message.speed;
+    scrollH = message.speed;
     if (scrollIntervalId) {
       clearInterval(scrollIntervalId);
       scrollIntervalId = setInterval(() => {
         chrome.scripting.executeScript({
           target: { tabId: tabId }, // ここでエラーが解決される
-          func: () => window.scrollBy(0, 10) // Adjust 10 to change the scroll amount
+          func: () => window.scrollBy(0, scrollH) // Adjust 10 to change the scroll amount
         });
       }, scrollSpeed);
     }
